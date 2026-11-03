@@ -1,0 +1,268 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+/* Begin PBXBuildFile section */
+		B1A33A8A814A4D6B82FEF526 /* GateKeeperApp.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = C3C263889AB34A14A8C38347 /* GateKeeperApp.swift */; };
+		8DC8A085F7804E1B94F1146D /* AppDelegate.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = 47C24BF45BA74E5CB6EA3CA2 /* AppDelegate.swift */; };
+		C7054D8B467C4DDF902F0E7A /* WorkspaceMonitor.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = 700D48E0F6AD416A85176F26 /* WorkspaceMonitor.swift */; };
+		BD899F6844124764B425C6F2 /* AuthManager.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = A9EE44CF1D99457495300D3A /* AuthManager.swift */; };
+		9D638D898730446A93C61EFC /* KeychainHelper.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = 708C9BBDA2AE4F15854CA565 /* KeychainHelper.swift */; };
+		964C4208EBFE448C8F593683 /* AppScanner.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = 9071C237F5EF4A6884DF0BBC /* AppScanner.swift */; };
+		BABE1619417248B89C69701C /* AccessibilityManager.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = 773C48046FEC4D61ACF02678 /* AccessibilityManager.swift */; };
+		D2CC0546459841F282645286 /* InstalledApp.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = 345FF37C8A5E4ED2A19C914B /* InstalledApp.swift */; };
+		0F78011131564E96A1901A7A /* LockOverlayController.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = E2AB6CBA27C3478DB6453EF3 /* LockOverlayController.swift */; };
+		59C66A7A2B36416999E8F7AD /* LockOverlayView.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = EC4FEE182A7148ECAC409658 /* LockOverlayView.swift */; };
+		F5D348ACBC3C4C658EB694F2 /* DashboardView.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = 794ADDC120994BD882149285 /* DashboardView.swift */; };
+		176F48069FC343C0812BB2AC /* PasscodeModalView.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = 215C1079674E41B8A2B2FBCF /* PasscodeModalView.swift */; };
+		598546FAE75145569C89BB8A /* OnboardingView.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = 51C736DC912347CE9FA4EDB3 /* OnboardingView.swift */; };
+		D9F23EBC466E48BB8B85566D /* AppRowView.swift in Sources/Resources */ = {isa = PBXBuildFile; fileRef = 8EE52CCFCA77406783FB5D21 /* AppRowView.swift */; };
+		D6639B468D75476C96D950C9 /* Assets.xcassets in Sources/Resources */ = {isa = PBXBuildFile; fileRef = 2DA1B65638A14C22B9B56373 /* Assets.xcassets */; };
+		FD914EEF51C049EC9BE86BFB /* AppIcon.icns in Sources/Resources */ = {isa = PBXBuildFile; fileRef = 67A170300A9A4AF6B8536406 /* AppIcon.icns */; };
+/* End PBXBuildFile section */
+/* Begin PBXFileReference section */
+		51B898D27A8849218FCAED8A /* GateKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GateKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C3C263889AB34A14A8C38347 /* GateKeeperApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/App/GateKeeperApp.swift"; sourceTree = "<group>"; };
+		47C24BF45BA74E5CB6EA3CA2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/App/AppDelegate.swift"; sourceTree = "<group>"; };
+		700D48E0F6AD416A85176F26 /* WorkspaceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/Core/WorkspaceMonitor.swift"; sourceTree = "<group>"; };
+		A9EE44CF1D99457495300D3A /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/Core/AuthManager.swift"; sourceTree = "<group>"; };
+		708C9BBDA2AE4F15854CA565 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/Core/KeychainHelper.swift"; sourceTree = "<group>"; };
+		9071C237F5EF4A6884DF0BBC /* AppScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/Core/AppScanner.swift"; sourceTree = "<group>"; };
+		773C48046FEC4D61ACF02678 /* AccessibilityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/Core/AccessibilityManager.swift"; sourceTree = "<group>"; };
+		345FF37C8A5E4ED2A19C914B /* InstalledApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/Models/InstalledApp.swift"; sourceTree = "<group>"; };
+		E2AB6CBA27C3478DB6453EF3 /* LockOverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/Overlay/LockOverlayController.swift"; sourceTree = "<group>"; };
+		EC4FEE182A7148ECAC409658 /* LockOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/Overlay/LockOverlayView.swift"; sourceTree = "<group>"; };
+		794ADDC120994BD882149285 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/UI/DashboardView.swift"; sourceTree = "<group>"; };
+		215C1079674E41B8A2B2FBCF /* PasscodeModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/UI/PasscodeModalView.swift"; sourceTree = "<group>"; };
+		51C736DC912347CE9FA4EDB3 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/UI/OnboardingView.swift"; sourceTree = "<group>"; };
+		8EE52CCFCA77406783FB5D21 /* AppRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/GateKeeper/UI/Components/AppRowView.swift"; sourceTree = "<group>"; };
+		2DA1B65638A14C22B9B56373 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Resources/Assets.xcassets"; sourceTree = "<group>"; };
+		67A170300A9A4AF6B8536406 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "Resources/AppIcon.icns"; sourceTree = "<group>"; };
+		36ED8CF2DEF34FA1A73033A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Resources/Info.plist"; sourceTree = "<group>"; };
+		89F087AF80B741F8BCCDD302 /* GateKeeper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Resources/GateKeeper.entitlements"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+/* Begin PBXFrameworksBuildPhase section */
+		7568691B3E414114BDD9CD17 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+/* Begin PBXGroup section */
+		9FA3953A5DF3434B803E262B = {
+			isa = PBXGroup;
+			children = (
+				C3C263889AB34A14A8C38347 /* GateKeeperApp.swift */,
+				47C24BF45BA74E5CB6EA3CA2 /* AppDelegate.swift */,
+				700D48E0F6AD416A85176F26 /* WorkspaceMonitor.swift */,
+				A9EE44CF1D99457495300D3A /* AuthManager.swift */,
+				708C9BBDA2AE4F15854CA565 /* KeychainHelper.swift */,
+				9071C237F5EF4A6884DF0BBC /* AppScanner.swift */,
+				773C48046FEC4D61ACF02678 /* AccessibilityManager.swift */,
+				345FF37C8A5E4ED2A19C914B /* InstalledApp.swift */,
+				E2AB6CBA27C3478DB6453EF3 /* LockOverlayController.swift */,
+				EC4FEE182A7148ECAC409658 /* LockOverlayView.swift */,
+				794ADDC120994BD882149285 /* DashboardView.swift */,
+				215C1079674E41B8A2B2FBCF /* PasscodeModalView.swift */,
+				51C736DC912347CE9FA4EDB3 /* OnboardingView.swift */,
+				8EE52CCFCA77406783FB5D21 /* AppRowView.swift */,
+				2DA1B65638A14C22B9B56373 /* Assets.xcassets */,
+				67A170300A9A4AF6B8536406 /* AppIcon.icns */,
+				36ED8CF2DEF34FA1A73033A4 /* Info.plist */,
+				89F087AF80B741F8BCCDD302 /* GateKeeper.entitlements */,
+				6699332BD44B45B2AD9A52CC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6699332BD44B45B2AD9A52CC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				51B898D27A8849218FCAED8A /* GateKeeper.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+/* Begin PBXNativeTarget section */
+		884C302953D5452F80E33B82 /* GateKeeper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9E0B38DEA8AE46C4A90CF22B /* Build configuration list for PBXNativeTarget "GateKeeper" */;
+			buildPhases = (
+				462F510660B34CF2AF324748 /* Sources */,
+				7568691B3E414114BDD9CD17 /* Frameworks */,
+				77FCDCC582814EFE8602B901 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GateKeeper;
+			productName = GateKeeper;
+			productReference = 51B898D27A8849218FCAED8A /* GateKeeper.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+/* Begin PBXProject section */
+		20C5105B01DD47F3A9A56E75 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = 2EEA2E21E6714E3E8E680FEF /* Build configuration list for PBXProject "GateKeeper" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9FA3953A5DF3434B803E262B;
+			productRefGroup = 6699332BD44B45B2AD9A52CC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				884C302953D5452F80E33B82 /* GateKeeper */,
+			);
+		};
+/* End PBXProject section */
+/* Begin PBXResourcesBuildPhase section */
+		77FCDCC582814EFE8602B901 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6639B468D75476C96D950C9 /* Assets.xcassets in Resources */,
+				FD914EEF51C049EC9BE86BFB /* AppIcon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+/* Begin PBXSourcesBuildPhase section */
+		462F510660B34CF2AF324748 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1A33A8A814A4D6B82FEF526 /* GateKeeperApp.swift in Sources */,
+				8DC8A085F7804E1B94F1146D /* AppDelegate.swift in Sources */,
+				C7054D8B467C4DDF902F0E7A /* WorkspaceMonitor.swift in Sources */,
+				BD899F6844124764B425C6F2 /* AuthManager.swift in Sources */,
+				9D638D898730446A93C61EFC /* KeychainHelper.swift in Sources */,
+				964C4208EBFE448C8F593683 /* AppScanner.swift in Sources */,
+				BABE1619417248B89C69701C /* AccessibilityManager.swift in Sources */,
+				D2CC0546459841F282645286 /* InstalledApp.swift in Sources */,
+				0F78011131564E96A1901A7A /* LockOverlayController.swift in Sources */,
+				59C66A7A2B36416999E8F7AD /* LockOverlayView.swift in Sources */,
+				F5D348ACBC3C4C658EB694F2 /* DashboardView.swift in Sources */,
+				176F48069FC343C0812BB2AC /* PasscodeModalView.swift in Sources */,
+				598546FAE75145569C89BB8A /* OnboardingView.swift in Sources */,
+				D9F23EBC466E48BB8B85566D /* AppRowView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+/* Begin XCBuildConfiguration section */
+		039D0CADECE34911AC9231C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		258D1A92296D4AAEB965791A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		BC4DDD9EEB7948C48963E17D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Resources/Info.plist;
+				CODE_SIGN_ENTITLEMENTS = Resources/GateKeeper.entitlements;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gatekeeper.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+			};
+			name = Debug;
+		};
+		808614ADE20745DBA8DEB4FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Resources/Info.plist;
+				CODE_SIGN_ENTITLEMENTS = Resources/GateKeeper.entitlements;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gatekeeper.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+/* Begin XCConfigurationList section */
+		2EEA2E21E6714E3E8E680FEF /* Build configuration list for PBXProject "GateKeeper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				039D0CADECE34911AC9231C3 /* Debug */,
+				258D1A92296D4AAEB965791A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9E0B38DEA8AE46C4A90CF22B /* Build configuration list for PBXNativeTarget "GateKeeper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC4DDD9EEB7948C48963E17D /* Debug */,
+				808614ADE20745DBA8DEB4FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 20C5105B01DD47F3A9A56E75 /* Project object */;
+}
