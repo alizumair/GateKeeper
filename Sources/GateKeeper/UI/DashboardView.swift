@@ -8,11 +8,18 @@ public struct DashboardView: View {
     @ObservedObject private var authManager = AuthManager.shared
     @ObservedObject private var accessibilityManager = AccessibilityManager.shared
     @ObservedObject private var recovery = RecoveryManager.shared
+    @ObservedObject private var launchAtLogin = LaunchAtLoginManager.shared
     
     @State private var searchText: String = ""
     @State private var selectedFilter: AppFilter = .all
     @State private var showingChangePasscodeSheet: Bool = false
     @State private var showingRecoverySetupSheet: Bool = false
+    
+    // Popover Authentication Gate
+    @State private var isPopoverAuthenticated: Bool = false
+    @State private var popoverPasscode: String = ""
+    @State private var popoverErrorMessage: String? = nil
+    @State private var isShakingPopover: Bool = false
     
     public enum AppFilter: String, CaseIterable, Identifiable {
         case all = "All"
@@ -47,31 +54,45 @@ public struct DashboardView: View {
     }
     
     public var body: some View {
-        VStack(spacing: 0) {
-            // Header Bar
-            headerBar
-            
-            Divider()
-            
-            // Accessibility Warning Banner (if permission missing)
-            if !accessibilityManager.isAccessibilityGranted {
-                accessibilityWarningBanner
+        Group {
+            if authManager.isPasscodeConfigured && !isPopoverAuthenticated {
+                // Password prompt right inside menu bar popover before showing contents
+                popoverAuthGateView
+            } else {
+                // Unlocked Dashboard Content
+                VStack(spacing: 0) {
+                    // Header Bar
+                    headerBar
+                    
+                    Divider()
+                    
+                    // Accessibility Warning Banner (only if missing and not dismissed)
+                    if !accessibilityManager.isAccessibilityGranted && !accessibilityManager.isBannerDismissed {
+                        accessibilityWarningBanner
+                    }
+                    
+                    // Search & Filter Bar
+                    searchAndFilterBar
+                    
+                    Divider()
+                    
+                    // Applications List
+                    appListSection
+                    
+                    Divider()
+                    
+                    // Footer Toolbar
+                    footerToolbar
+                }
             }
-            
-            // Search & Filter Bar
-            searchAndFilterBar
-            
-            Divider()
-            
-            // Applications List
-            appListSection
-            
-            Divider()
-            
-            // Footer Toolbar
-            footerToolbar
         }
         .frame(width: 360, height: 520)
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("GateKeeperPopoverDidClose"))) { _ in
+            // Automatically relock whenever menu bar popover is closed
+            isPopoverAuthenticated = false
+            popoverPasscode = ""
+            popoverErrorMessage = nil
+        }
         .sheet(isPresented: $showingChangePasscodeSheet) {
             PasscodeModalView(
                 mode: authManager.isPasscodeConfigured ? .changePasscode : .initialSetup
@@ -86,7 +107,148 @@ public struct DashboardView: View {
         }
     }
     
-    // MARK: - Subviews
+    // MARK: - Popover Password Gate
+    
+    private var popoverAuthGateView: some View {
+        VStack(spacing: 20) {
+            Spacer()
+            
+            ZStack {
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.blue, Color.purple],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 64, height: 64)
+                    .shadow(color: Color.blue.opacity(0.35), radius: 10, x: 0, y: 4)
+                
+                Image(systemName: "lock.shield.fill")
+                    .font(.system(size: 30, weight: .bold))
+                    .foregroundColor(.white)
+            }
+            
+            VStack(spacing: 4) {
+                Text("GateKeeper Protected")
+                    .font(.system(size: 16, weight: .bold))
+                
+                Text("Enter master passcode to view dashboard")
+                    .font(.system(size: 11))
+                    .foregroundColor(.secondary)
+            }
+            
+            if let err = popoverErrorMessage {
+                HStack(spacing: 4) {
+                    Image(systemName: "exclamationmark.circle.fill")
+                    Text(err)
+                }
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(.red)
+                .multilineTextAlignment(.center)
+            }
+            
+            VStack(spacing: 12) {
+                HStack(spacing: 8) {
+                    Image(systemName: "key.fill")
+                        .foregroundColor(.secondary)
+                        .font(.system(size: 12))
+                    
+                    SecureField("Master passcode", text: $popoverPasscode)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .font(.system(size: 13))
+                        .onSubmit {
+                            authenticatePopover()
+                        }
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color(nsColor: .controlBackgroundColor))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(popoverErrorMessage != nil ? Color.red : Color.secondary.opacity(0.2), lineWidth: 1)
+                        )
+                )
+                .offset(x: isShakingPopover ? -8 : 0)
+                .animation(isShakingPopover ? Animation.default.repeatCount(4, autoreverses: true).speed(4) : .default, value: isShakingPopover)
+                
+                HStack(spacing: 8) {
+                    if authManager.isBiometricsEnabled && authManager.isBiometricsAvailable {
+                        Button(action: authenticatePopoverWithBiometrics) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "touchid")
+                                Text("Touch ID")
+                            }
+                        }
+                        .buttonStyle(.bordered)
+                        .controlSize(.regular)
+                    }
+                    
+                    Button(action: authenticatePopover) {
+                        Text("Unlock")
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.regular)
+                }
+            }
+            .frame(width: 250)
+            
+            if recovery.isRecoveryConfigured {
+                Button(action: {
+                    showingRecoverySetupSheet = true
+                }) {
+                    Text("Forgot Passcode? Use Recovery")
+                        .font(.system(size: 11))
+                        .foregroundColor(.accentColor)
+                        .underline()
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.top, 4)
+            }
+            
+            Spacer()
+        }
+        .padding(24)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(nsColor: .windowBackgroundColor))
+    }
+    
+    private func authenticatePopover() {
+        guard !popoverPasscode.isEmpty else { return }
+        
+        if authManager.verifyPasscode(popoverPasscode) {
+            popoverErrorMessage = nil
+            withAnimation {
+                isPopoverAuthenticated = true
+            }
+        } else {
+            popoverErrorMessage = "Incorrect passcode"
+            isShakingPopover = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                isShakingPopover = false
+            }
+        }
+    }
+    
+    private func authenticatePopoverWithBiometrics() {
+        authManager.authenticateWithBiometrics(reason: "unlock GateKeeper dashboard") { success, error in
+            if success {
+                popoverErrorMessage = nil
+                withAnimation {
+                    isPopoverAuthenticated = true
+                }
+            } else if let error = error, !error.contains("canceled") && !error.contains("cancelled") {
+                popoverErrorMessage = error
+            }
+        }
+    }
+    
+    // MARK: - Dashboard Subviews
     
     private var headerBar: some View {
         HStack {
@@ -119,6 +281,21 @@ public struct DashboardView: View {
             
             Spacer()
             
+            // Relock Dashboard Button
+            Button(action: {
+                withAnimation {
+                    isPopoverAuthenticated = false
+                    popoverPasscode = ""
+                }
+            }) {
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 11))
+                    .foregroundColor(.secondary)
+            }
+            .buttonStyle(PlainButtonStyle())
+            .help("Lock Dashboard")
+            .padding(.trailing, 8)
+            
             // Master Engine Toggle
             Toggle("", isOn: $monitor.isEngineEnabled)
                 .toggleStyle(SwitchToggleStyle(tint: .accentColor))
@@ -135,9 +312,9 @@ public struct DashboardView: View {
                 .foregroundColor(.orange)
             
             VStack(alignment: .leading, spacing: 2) {
-                Text("Accessibility Needed")
+                Text("Accessibility (Optional)")
                     .font(.system(size: 11, weight: .semibold))
-                Text("Required to monitor app switching.")
+                Text("Helpful for advanced window tracking.")
                     .font(.system(size: 10))
                     .foregroundColor(.secondary)
             }
@@ -149,6 +326,16 @@ public struct DashboardView: View {
             }
             .buttonStyle(.bordered)
             .controlSize(.small)
+            
+            Button(action: {
+                accessibilityManager.dismissBanner()
+            }) {
+                Image(systemName: "xmark")
+                    .font(.system(size: 10))
+                    .foregroundColor(.secondary)
+            }
+            .buttonStyle(PlainButtonStyle())
+            .help("Dismiss")
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
@@ -276,7 +463,7 @@ public struct DashboardView: View {
     }
     
     private var footerToolbar: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 8) {
             // Passcode Settings Button
             Button(action: {
                 showingChangePasscodeSheet = true
@@ -306,8 +493,15 @@ public struct DashboardView: View {
             .buttonStyle(.bordered)
             .controlSize(.small)
             
-            // Relock Policy Menu
+            // Preferences Menu (Auto Start + Relock)
             Menu {
+                Toggle("Launch at Login (Auto Start)", isOn: $launchAtLogin.isEnabled)
+                
+                Divider()
+                
+                Text("Relock Inactivity Policy:")
+                    .font(.caption)
+                
                 ForEach(RelockPolicy.allCases) { policy in
                     Button(action: {
                         monitor.relockPolicy = policy
@@ -322,9 +516,9 @@ public struct DashboardView: View {
                 }
             } label: {
                 HStack(spacing: 4) {
-                    Image(systemName: "clock.arrow.circlepath")
+                    Image(systemName: "gearshape")
                         .font(.system(size: 11))
-                    Text("Relock: \(monitor.relockPolicy.rawValue)")
+                    Text("Settings")
                         .font(.system(size: 10))
                 }
             }

@@ -2,7 +2,7 @@ import AppKit
 import SwiftUI
 
 /// Main application delegate handling the status bar item, popover lifecycle, and startup sequence.
-public final class AppDelegate: NSObject, NSApplicationDelegate {
+public final class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     private var statusItem: NSStatusItem!
     private var popover: NSPopover!
     private var onboardingWindowController: NSWindowController?
@@ -18,6 +18,8 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
         _ = WorkspaceMonitor.shared
         _ = AppScanner.shared
         _ = AccessibilityManager.shared
+        _ = LaunchAtLoginManager.shared
+        _ = RecoveryManager.shared
         
         // First launch checks
         checkFirstLaunchExperience()
@@ -49,6 +51,7 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
         popover.contentSize = NSSize(width: 360, height: 520)
         popover.behavior = .transient
         popover.animates = true
+        popover.delegate = self
         popover.contentViewController = NSHostingController(rootView: DashboardView())
     }
     
@@ -69,14 +72,21 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    // MARK: - NSPopoverDelegate
+    
+    public func popoverDidClose(_ notification: Notification) {
+        // Notify dashboard to re-lock so next opening requires password again
+        NotificationCenter.default.post(name: Notification.Name("GateKeeperPopoverDidClose"), object: nil)
+    }
+    
     // MARK: - Onboarding & Initial Setup
     
     private func checkFirstLaunchExperience() {
         let authManager = AuthManager.shared
-        let accessibility = AccessibilityManager.shared
+        let hasCompleted = UserDefaults.standard.bool(forKey: "GateKeeperHasCompletedOnboarding")
         
-        if !authManager.isPasscodeConfigured || !accessibility.isAccessibilityGranted {
-            // Present onboarding window on first launch
+        // Only show onboarding window once on true first launch if passcode is not yet configured
+        if !hasCompleted && !authManager.isPasscodeConfigured {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 self?.presentOnboardingWindow()
             }
@@ -85,6 +95,7 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
     
     private func presentOnboardingWindow() {
         let onboardingView = OnboardingView { [weak self] in
+            UserDefaults.standard.set(true, forKey: "GateKeeperHasCompletedOnboarding")
             self?.onboardingWindowController?.close()
             self?.onboardingWindowController = nil
             // Show the popover dashboard after onboarding finishes
