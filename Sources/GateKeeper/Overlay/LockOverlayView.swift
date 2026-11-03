@@ -188,14 +188,6 @@ public struct LockOverlayView: View {
                     .shadow(color: Color.black.opacity(0.5), radius: 30, x: 0, y: 15)
             )
         }
-        .onAppear {
-            if authManager.isBiometricsEnabled && authManager.isBiometricsAvailable {
-                // Slight delay so the overlay window renders smoothly before the system biometric prompt appears
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    triggerBiometrics()
-                }
-            }
-        }
     }
     
     private func handlePasscodeSubmit() {
@@ -217,7 +209,7 @@ public struct LockOverlayView: View {
         guard !isAuthenticatingBiometrics else { return }
         isAuthenticatingBiometrics = true
         
-        let reason = "Unlock \(appName) with GateKeeper"
+        let reason = "unlock \(appName)"
         authManager.authenticateWithBiometrics(reason: reason) { success, error in
             isAuthenticatingBiometrics = false
             if success {
