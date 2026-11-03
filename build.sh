@@ -17,6 +17,7 @@ mkdir -p "$RESOURCES_DIR"
 
 # 3. Copy binary
 cp .build/release/GateKeeper "$MACOS_DIR/GateKeeper"
+chmod +x "$MACOS_DIR/GateKeeper"
 
 # 4. Copy Info.plist and AppIcon
 cp Resources/Info.plist "$APP_DIR/Contents/Info.plist"

@@ -7,11 +7,12 @@ public struct DashboardView: View {
     @ObservedObject private var scanner = AppScanner.shared
     @ObservedObject private var authManager = AuthManager.shared
     @ObservedObject private var accessibilityManager = AccessibilityManager.shared
+    @ObservedObject private var recovery = RecoveryManager.shared
     
     @State private var searchText: String = ""
     @State private var selectedFilter: AppFilter = .all
     @State private var showingChangePasscodeSheet: Bool = false
-    @State private var showingSettingsSheet: Bool = false
+    @State private var showingRecoverySetupSheet: Bool = false
     
     public enum AppFilter: String, CaseIterable, Identifiable {
         case all = "All"
@@ -76,6 +77,11 @@ public struct DashboardView: View {
                 mode: authManager.isPasscodeConfigured ? .changePasscode : .initialSetup
             ) {
                 showingChangePasscodeSheet = false
+            }
+        }
+        .sheet(isPresented: $showingRecoverySetupSheet) {
+            RecoverySetupView {
+                showingRecoverySetupSheet = false
             }
         }
     }
@@ -278,7 +284,22 @@ public struct DashboardView: View {
                 HStack(spacing: 4) {
                     Image(systemName: "key.fill")
                         .font(.system(size: 11))
-                    Text(authManager.isPasscodeConfigured ? "Change Passcode" : "Set Passcode")
+                    Text(authManager.isPasscodeConfigured ? "Passcode" : "Set Passcode")
+                        .font(.system(size: 11, weight: .medium))
+                }
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+            
+            // Recovery Button
+            Button(action: {
+                showingRecoverySetupSheet = true
+            }) {
+                HStack(spacing: 4) {
+                    Image(systemName: recovery.isRecoveryConfigured ? "checkmark.shield.fill" : "shield.lefthalf.filled")
+                        .font(.system(size: 11))
+                        .foregroundColor(recovery.isRecoveryConfigured ? .green : .accentColor)
+                    Text("Recovery")
                         .font(.system(size: 11, weight: .medium))
                 }
             }

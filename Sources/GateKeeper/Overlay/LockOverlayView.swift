@@ -9,10 +9,13 @@ public struct LockOverlayView: View {
     let onCancel: () -> Void
     
     @ObservedObject private var authManager = AuthManager.shared
+    @ObservedObject private var recovery = RecoveryManager.shared
+    
     @State private var passcode: String = ""
     @State private var errorMessage: String? = nil
     @State private var isShaking: Bool = false
     @State private var isAuthenticatingBiometrics: Bool = false
+    @State private var showingRecovery: Bool = false
     
     public init(app: NSRunningApplication, onUnlock: @escaping () -> Void, onCancel: @escaping () -> Void) {
         self.app = app
@@ -44,8 +47,19 @@ public struct LockOverlayView: View {
                 .edgesIgnoringSafeArea(.all)
                 .overlay(Color.black.opacity(0.35))
             
-            // Central Auth Card
-            VStack(spacing: 24) {
+            if showingRecovery {
+                RecoveryUnlockView(
+                    onUnlock: onUnlock,
+                    onCancel: {
+                        withAnimation {
+                            showingRecovery = false
+                        }
+                    }
+                )
+                .transition(.asymmetric(insertion: .scale.combined(with: .opacity), removal: .opacity))
+            } else {
+                // Central Auth Card
+                VStack(spacing: 24) {
                 // App Icon with glowing lock badge
                 ZStack(alignment: .bottomTrailing) {
                     Image(nsImage: appIcon)
@@ -168,14 +182,32 @@ public struct LockOverlayView: View {
                 .frame(width: 320)
                 
                 // Cancel / Lock Action
-                Button(action: onCancel) {
-                    Text("Cancel and Hide App")
-                        .font(.system(size: 12, weight: .regular))
-                        .foregroundColor(Color.white.opacity(0.5))
-                        .underline()
+                VStack(spacing: 12) {
+                    Button(action: onCancel) {
+                        Text("Cancel and Hide App")
+                            .font(.system(size: 12, weight: .regular))
+                            .foregroundColor(Color.white.opacity(0.5))
+                            .underline()
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .keyboardShortcut(.escape, modifiers: [])
+                    
+                    if recovery.isRecoveryConfigured {
+                        Button(action: {
+                            withAnimation {
+                                showingRecovery = true
+                            }
+                        }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "key.viewfinder")
+                                Text("Forgot Passcode? Use Recovery")
+                            }
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundColor(Color.cyan.opacity(0.85))
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
                 }
-                .buttonStyle(PlainButtonStyle())
-                .keyboardShortcut(.escape, modifiers: [])
             }
             .padding(40)
             .background(
@@ -187,6 +219,7 @@ public struct LockOverlayView: View {
                     )
                     .shadow(color: Color.black.opacity(0.5), radius: 30, x: 0, y: 15)
             )
+            }
         }
     }
     
